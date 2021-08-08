@@ -6,8 +6,11 @@ const exphbs = require('express-handlebars')
 const app = express()
 
 app.use(express.static(path.join(__dirname,'public')))
-console.log(path.join(__dirname,'public'))
 
+app.use(express.urlencoded({
+    extended: true
+}))
+app.use(express.json())
 // HTTP Logger
 app.use(morgan('combined'))
 
@@ -19,15 +22,11 @@ app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname,'resources/views'))
 
 const port = 3000
-// route 
-//arow function
-app.get('/',(req, res) =>{
-    res.render('home')
-})
 
-app.get('/news',(req, res) =>{
-    res.render('news')
-})
+const route = require('./routes')
+
+// route init
+route(app)
 
 // app.get('/', function(req, res){//normal function
 //     res.send('Hello word!');
